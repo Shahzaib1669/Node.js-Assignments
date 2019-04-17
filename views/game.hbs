@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <style>
+        h2 {
+            color: brown;
+            font-family: "Arial Narrow", serif;
+            font-size: 25px;
+            position: center;
+        }
+        #result{
+            color: red;
+            font-size: 15px;
+        }
+        #board{
+            border: 5px;
+            background-color: beige;
+        }
+    </style>
+
+</head>
+<body bgcolor="#ffebcd">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/">Home </a>
+            <a class="nav-item nav-link active" href="/register">Register <span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="/verify">Sign In </a>
+        </div>
+    </div>
+</nav>
+
+<div align="center">
+    <h2>{{head}}</h2>
+</div><br>
+<form method="POST" action="/save">
+    <div align="center" id="board">
+        <table>
+            <tr >
+                <td height="100">
+                    <div align="center" id="random1">Calculation</div>
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <button onclick="generate()" type="button" style="padding: 5px">Generate</button>
+            </tr><br>
+            <tr><br>
+                <input onclick="Save()" type="submit" style="padding: 5px" value="Save">
+            <br>
+                <td>
+                    <div id="ClearForm">
+                        <label>Answer:</label>
+                        <label for="insert"></label><input type="number" id="insert" >
+                        <button onclick="Check()" type="button" >Check</button>
+                    </div>
+                </td>
+            </tr>
+            <tr><td><div id="result" align="center"></div></td></tr>
+            <tr>
+                <td>
+                    <table style="width: 100%; border: 2px solid darkred">
+                        <tr>
+                            <th>CORRECT</th>
+                            <th>INCORRECT</th>
+                        </tr>
+                        <tr>
+                            <input name="correct" id="hidden_correct" type="hidden" value=0 >
+                            <input name="wrong" id="hidden_wrong" type="hidden" value=0 >  
+
+                            <td><div id="correct">0</div></td>
+                            <td><div id="wrong">0</div></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <br><br>
+                        <tr>
+                <td>
+                    <table style="width: 100%; border: 2px solid darkred">
+                        <tr>
+                            <br>
+                            <h2 align="center">Saved Score</h2>
+                            <br>
+                            <th>CORRECT</th>
+                            <th>INCORRECT</th>
+                        </tr>
+                        <tr>
+                            <td><div id="pcorrect">{{pc}}</div></td>
+                            <td><div id="pwrong">{{wc}}</div></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+<script>
+    //var file = "game_state.json";
+    var equals;
+    var correct_value = parseInt(document.getElementById('correct').innerHTML);
+    var wrong_value = parseInt(document.getElementById('wrong').innerHTML);
+    var correct_list, wrong_list;
+    //const fs = require('fs');
+
+
+    function generate() {
+       var a = Math.floor((Math.random() * 10));
+       var b = Math.floor((Math.random() * 10));
+       var format = (a + " * " + b);
+       equals = (a * b);
+        document.getElementById("random1").innerHTML = format;
+    }
+
+    function Check() {
+        if (document.getElementById("insert").value === ""){
+            document.getElementById("result").innerHTML = "An answer is required!"
+        }else {
+            if (document.getElementById("insert").value === equals.toString() ) {
+                correct_list = ++correct_value;
+                //document.getElementById("correct").innerHTML = correct_list;
+                document.getElementById("correct").innerHTML = correct_list;
+                document.getElementById("hidden_correct").value = correct_list;
+                if (document.getElementById("result").innerHTML = "Correct Answer!"){
+                    generate();
+                }
+                document.getElementById("ClearForm").reset();
+            }
+            else {
+                wrong_list = ++wrong_value;
+                //document.getElementById("wrong").innerHTML = wrong_list;
+                document.getElementById("wrong").innerHTML = wrong_list;
+                document.getElementById("hidden_wrong").value = wrong_list;
+                if (document.getElementById("result").innerHTML = "Wrong Answer!"){
+                    generate()
+                }
+                document.getElementById("ClearForm").reset();
+            }
+        }
+        
+    }
+</script>
+</body>
+</html>
